@@ -16,12 +16,12 @@ minimal_mistakes_skin: "default" # "air", "aqua", "contrast", "dark", "dirt", "n
 
 # Site Settings
 locale: "en-US"
-title: "I am Min"
+title: "iamin.dev"
 title_separator: "-"
-subtitle: # site tagline that appears below site title in masthead
-name: "Minh"
-description: "I started writing about problems and solutions which I had to solve as an iOS developer"
-url: # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
+subtitle: ""
+name: "I am Minh. iOS Freelancer"
+description: "Personal portfolio and swift articles"
+url: https:/iaminh.github.io
 baseurl: # the subpath of your site, e.g. "/blog"
 repository: # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
 teaser: # path of fallback teaser image, e.g. "/assets/images/500x300.png"
@@ -51,8 +51,8 @@ reCaptcha:
   secret:
 atom_feed:
   path: # blank (default) uses feed.xml
-search: # true, false (default)
-search_full_content: # true, false (default)
+search: true
+search_full_content: true
 search_provider: # lunr (default), algolia, google
 algolia:
   application_id: # YOUR_APPLICATION_ID
@@ -92,30 +92,18 @@ analytics:
 
 # Site Author
 author:
-  name: "Minh Chu"
-  avatar: # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio: "iOS dev"
+  name: "Min(h) Chu"
+  avatar: "/assets/images/minh-dep-trai.jpg"
+  bio: "Contractor, poker player, financial markets enthuasiast"
   location: "Prague, Czechia"
   email:
   links:
-    - label: "Email"
-      icon: "fas fa-fw fa-envelope-square"
-      # url: "mailto:your.name@email.com"
-    - label: "Website"
-      icon: "fas fa-fw fa-link"
-      # url: "https://your-website.com"
-    - label: "Twitter"
-      icon: "fab fa-fw fa-twitter-square"
-      # url: "https://twitter.com/"
-    - label: "Facebook"
-      icon: "fab fa-fw fa-facebook-square"
-      # url: "https://facebook.com/"
+    - label: "mail"
+      icon: "fas fa-fw fa-envelope"
+      url: "mailto:iaminh.dev@gmail.com"
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
-      # url: "https://github.com/"
-    - label: "Instagram"
-      icon: "fab fa-fw fa-instagram"
-      # url: "https://instagram.com/"
+      url: "https://github.com/iaminh"
 
 # Site Footer
 footer:
