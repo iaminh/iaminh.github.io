@@ -16,16 +16,16 @@ minimal_mistakes_skin: "default" # "air", "aqua", "contrast", "dark", "dirt", "n
 
 # Site Settings
 locale: "en-US"
-title: "iamin.dev"
+title: "iamin - Short iOS Swift recipes"
 title_separator: "-"
 subtitle: ""
-name: "I am Minh. iOS Freelancer"
-description: "Personal portfolio and swift articles"
-url: https:/iaminh.github.io
+name: "Minh Chu"
+description: "Minh Chu's attempt to share interesting findings in the world of iOS development, the fun way"
+url: https://iamin.dev
 baseurl: # the subpath of your site, e.g. "/blog"
 repository: # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
 teaser: # path of fallback teaser image, e.g. "/assets/images/500x300.png"
-logo: # path of logo image to display in the masthead, e.g. "/assets/images/88x88.png"
+logo: "/assets/images/logo.png"
 masthead_title: # overrides the website title displayed in the masthead, use " " for no title
 # breadcrumbs            : false # true, false (default)
 words_per_minute: 200
@@ -94,23 +94,22 @@ analytics:
 author:
   name: "Min(h) Chu"
   avatar: "/assets/images/minh-dep-trai.jpg"
-  bio: "Contractor, poker player, financial markets enthuasiast"
-  location: "Prague, Czechia"
+  bio: "Freelancer, poker player, financial markets enthuasiast"
+  location: "Prague, Czechia :czech_republic:           ."
   email:
   links:
-    - label: "mail"
+    - label: "hi@iamin.dev"
       icon: "fas fa-fw fa-envelope"
-      url: "mailto:iaminh.dev@gmail.com"
+      url: ""
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/iaminh"
-
 # Site Footer
 footer:
   links:
     - label: "Twitter"
       icon: "fab fa-fw fa-twitter-square"
-      # url:
+      url: https://twitter.com/iamin_dev
     - label: "Facebook"
       icon: "fab fa-fw fa-facebook-square"
       # url:
@@ -200,7 +199,7 @@ plugins:
   - jekyll-gist
   - jekyll-feed
   - jekyll-include-cache
-
+  - jemoji
 # mimic GitHub Pages with --safe
 whitelist:
   - jekyll-paginate
@@ -243,7 +242,6 @@ compress_html:
   clippings: all
   ignore:
     envs: development
-
 # Defaults
 defaults:
   # _posts
@@ -252,7 +250,7 @@ defaults:
       type: posts
     values:
       layout: single
-      author_profile: true
+      author_profile: false
       read_time: true
       comments: # true
       share: true

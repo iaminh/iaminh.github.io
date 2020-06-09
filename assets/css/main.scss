@@ -6,3 +6,79 @@
 
 @import "minimal-mistakes/skins/{{ site.minimal_mistakes_skin | default: 'default' }}"; // skin
 @import "minimal-mistakes"; // main partials
+
+html {
+  font-size: 14px; // change to whatever
+
+  @include breakpoint($medium) {
+    font-size: 13px; // change to whatever
+  }
+
+  @include breakpoint($large) {
+    font-size: 16px; // change to whatever
+  }
+
+  @include breakpoint($x-large) {
+    font-size: 18px; // change to whatever
+  }
+}
+
+  /* CUSTOMERS */
+
+  .logos {
+      text-align: center;
+  }
+
+  .logos span {
+      // position: relative;
+
+      display: inline-block;
+
+      margin: 25px;
+
+      transition: .5s;
+      vertical-align: middle;
+
+      opacity: .6;
+
+      -webkit-filter: grayscale(1);
+      filter: grayscale(1);
+  }
+
+  .ie .logos span:before {
+      // position: absolute;
+      top: 0;
+      left: 0;
+
+      display: block;
+
+      width: 100%;
+      height: 100%;
+
+      content: '';
+
+      background: rgba(250, 250, 250, .9);
+  }
+
+  .logos span:hover {
+      opacity: 1;
+
+      -webkit-filter: grayscale(0);
+      filter: grayscale(0);
+  }
+
+  .gecko .logos span,
+  .gecko .logos span:hover {
+      filter: none;
+  }
+
+  .ie .logos span:hover:before {
+      background: rgba(250, 250, 250, 0);
+  }
+
+  .logos img {
+      width: auto;
+      max-width: 142px;
+      height: auto;
+      max-height: 80px;
+  }

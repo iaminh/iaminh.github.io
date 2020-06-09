@@ -33,6 +33,7 @@
 
 .archive__subtitle {
   margin: 1.414em 0 0;
+  padding-top: 1em;
   padding-bottom: 0.5em;
   font-size: $type-size-5;
   color: $muted-text-color;
@@ -74,7 +75,7 @@
 
 .archive__item-excerpt {
   margin-top: 0;
-  font-size: $type-size-6;
+  font-size: $type-size-5;
 
   & + p {
     text-indent: 0;

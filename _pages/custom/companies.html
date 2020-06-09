@@ -1,0 +1,105 @@
+<style>
+    /* CUSTOMERS */
+    .customers h2 {
+        font-size: 48px;
+        font-weight: 500;
+        font-style: italic;
+
+        margin-bottom: 10px;
+
+        color: #6cb245;
+    }
+
+    .logos {
+        font-size: 0;
+    }
+
+    .logos span {
+        position: relative;
+
+        display: inline-block;
+
+        margin: 25px;
+
+        transition: .5s;
+        vertical-align: middle;
+
+        opacity: .4;
+
+        -webkit-filter: grayscale(1);
+        filter: grayscale(1);
+    }
+
+    .ie .logos span:before {
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        display: block;
+
+        width: 100%;
+        height: 100%;
+
+        content: '';
+
+        background: rgba(250, 250, 250, .9);
+    }
+
+    .logos span:hover {
+        opacity: 1;
+
+        -webkit-filter: grayscale(0);
+        filter: grayscale(0);
+    }
+
+    .gecko .logos span,
+    .gecko .logos span:hover {
+        filter: none;
+    }
+
+    .ie .logos span:hover:before {
+        background: rgba(250, 250, 250, 0);
+    }
+
+    .logos img {
+        width: auto;
+        max-width: 142px;
+        height: auto;
+        max-height: 80px;
+    }
+</style>
+
+<section class="customers bg-grey">
+    <div class="logos">
+        <h2>Featured customers</h2>
+
+        <span>
+            <img src="https://zentity.com/wp-content/themes/ds-prime/img/bg_loader.gif" class="lazy-load"
+                data-src="/uploads/2016/03/KBC.png" alt="KBC Group" title="KBC Group">
+        </span>
+        <span>
+            <img src="https://zentity.com/wp-content/themes/ds-prime/img/bg_loader.gif" class="lazy-load"
+                data-src="/uploads/2016/03/ING_logo-300x74.png" alt="ING Bank" title="ING Bank">
+        </span>
+        <span>
+            <img src="https://zentity.com/wp-content/themes/ds-prime/img/bg_loader.gif" class="lazy-load"
+                data-src="/uploads/2017/03/addiko-300x39.png" alt="Addiko Bank" title="Addiko Bank">
+        </span>
+        <span>
+            <img src="https://zentity.com/wp-content/themes/ds-prime/img/bg_loader.gif" class="lazy-load"
+                data-src="/uploads/2016/03/Raiffeisen_Bank.svg-300x80.png" alt="Raiffeisenbank" title="Raiffeisenbank">
+        </span>
+        <span>
+            <img src="https://zentity.com/wp-content/themes/ds-prime/img/bg_loader.gif" class="lazy-load"
+                data-src="/uploads/2016/03/Sparkasse-300x50.png" alt="WSPK" title="WSPK">
+        </span>
+        <span>
+            <img src="https://zentity.com/wp-content/themes/ds-prime/img/bg_loader.gif" class="lazy-load"
+                data-src="/uploads/2016/03/vodafone.png" alt="Vodafone" title="Vodafone">
+        </span>
+        <span>
+            <img src="https://zentity.com/wp-content/themes/ds-prime/img/bg_loader.gif" class="lazy-load"
+                data-src="/uploads/2016/03/Microsoft_logo_2012.svg-300x64.png" alt="Microsoft" title="Microsoft">
+        </span>
+    </div>
+</section>
