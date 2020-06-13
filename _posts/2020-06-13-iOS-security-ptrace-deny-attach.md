@@ -139,10 +139,12 @@ let package = Package(
         .target(
             name: "Ptrace",
             dependencies: ["PtraceC"],
-            path: "Sources/PtraceSwift"),
+            path: "Sources/PtraceSwift"
+            ),
         .target(
             name: "PtraceC",
-            path: "Sources/PtraceC"),
+            path: "Sources/PtraceC"
+            )
     ]
 )
 ```
