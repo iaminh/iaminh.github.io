@@ -1,12 +1,13 @@
 ---
 title: "Deeplinking with coordinators"
 tags:
-  - architecture
-  - coordinator
+  - coordinators
+  - deeplinks
+  - combine
 header:
   teaser: "assets/images/coordinator-teaser.jpg"
 ---
-There are countless articles about **Coordinator** pattern and how great it is to manage deeplinking, but not many go in-depth on how to use it in real production apps.
+There are countless articles about **Coordinator** pattern and how great it is to manage deeplinking, but not many go in-depth on how to actually use them in real production apps.
 
 {% raw %}
 <img src="../../assets/images/coordinator-teaser.jpg" alt="">
