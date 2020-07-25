@@ -4,12 +4,18 @@ tags:
   - architecture
   - coordinator
 header:
-  teaser: "assets/images/hackerimg.jpg"
+  teaser: "assets/images/coordinator-teaser.jpg"
 ---
-
 There are countless articles about **Coordinator** pattern and how great it is to manage deeplinking, but not many go in-depth on how to use it in real production apps.
 
+{% raw %}
+<img src="../../assets/images/coordinator-teaser.jpg" alt="">
+{% endraw %}
 
+## Coordinators
+
+The coordinator pattern is wildly known and there are many articles about that. 
+That's why I will not describe how to implement them.
 
 *So why coordinators? You don't want to end up with something like this...*
 ```swift
@@ -41,13 +47,6 @@ if let navCtrl = rootVC as? UINavigationController ?? rootVC.navigationControlle
 }
 
 ```
-
-## Coordinators
-
-The coordinator pattern is wildly known and there are many articles about that. 
-That's why I will not describe how to implement them.
-
-You can also use my [implementation](https://github.com/iaminh/CoordinatorExample) to follow the guide.
 
 I strongly encourage using *Reactive* approach with *MVVM*. For the sake of simplicity, I will skip the `ViewModel` part and only continue using Coordinators and ViewControllers.
 
@@ -208,7 +207,7 @@ We are passing deeplinks deeper into child coordinators by binding deeplinkSubje
 
 Note that we used `CurrentValueSubject` (`BehaviorSubject` in RxSwift) instead of `PassthroughSubject` (`PublishSubject` in RxSwift) because in the time the deeplinkSubject gets emitted, we may not have our child Coordinators initialized.  
 
-We have to `resetDeeplink` after we process the deeplink. That should solve the cases when the deeplink gets emitted again and we are already deeper in the navigation.  
+We have to `resetDeeplink` after we process the deeplink. That should solve the cases when the deeplink gets emitted again and we are already deeper in the navigation.
 
 In this implementation we will always reset the navigation when the deeplink gets emitted.
 
