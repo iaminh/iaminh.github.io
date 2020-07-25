@@ -7,7 +7,7 @@ header:
   teaser: "assets/images/hackerimg.jpg"
 ---
 
-Countless of articles about **Coordinator** pattern and how great it is to manage deeplinking, but not many really goes in depth on how to actually use it in real production apps.
+There are countless articles about **Coordinator** pattern and how great it is to manage deeplinking, but not many go in-depth on how to use it in real production apps.
 
 
 
@@ -42,13 +42,14 @@ if let navCtrl = rootVC as? UINavigationController ?? rootVC.navigationControlle
 
 ```
 
-Let's see how we can improve this :)
-
 ## Coordinators
 
-The coordinator pattern is wildly known and there are many articles about that. That's why I will not describe how to actually implement them.
+The coordinator pattern is wildly known and there are many articles about that. 
+That's why I will not describe how to implement them.
 
 You can also use my [implementation](https://github.com/iaminh/CoordinatorExample) to follow the guide.
+
+I strongly encourage using *Reactive* approach with *MVVM*. For the sake of simplicity, I will skip the `ViewModel` part and only continue using Coordinators and ViewControllers.
 
 ## App structure
 
@@ -56,5 +57,238 @@ You can also use my [implementation](https://github.com/iaminh/CoordinatorExampl
 <img src="../../assets/images/appStructure.png" alt="">
 {% endraw %}
 
-We will implement deeplinks for this app structure. Our main purpose is to be able to deeplink to any part of the app. There are multiple layers of coordinators/childCoordinators and our job is to load the correct screen
+We will implement deeplinks for the above app structure. Our main purpose is to be able to deeplink to any part of the app. There are multiple layers of coordinators/childCoordinators and our job is to load the correct screen and keep the same navigation hierarchy.
 
+## Go with the flow
+
+Let's start by separating our app into flows. We can create one flow per coordinator.
+So our `AppFlow` should look like this:
+
+```swift
+enum AppFlow: String {
+    case home
+    case login
+}
+```
+In this case we either navigate the user to the login screen or to the main dashboard.
+
+And our `Home` and `Login` parts should look like this. The other flows should be implemented in the same manner.
+
+```swift
+enum HomeFlow: String {
+    case dashboard
+    case profile
+    case settings
+} 
+
+enum LoginFlow: String {
+    case login
+    case registration
+}
+
+....
+
+enum CardFlow: String {
+    case card
+    case cardDetail
+}
+
+```
+
+### The fun part
+Now we had defined several flows. So how to actually pass the deeplink from `AppFlow` to other flows, child flows? How can we now that *cardDetail* belongs to `CardFlow`, or that we have to go through  
+
+`AppFlow → HomeFlow → DashboardFlow → CardFlow` in order to show `CardDetailVC`?
+
+### Recursion
+
+{% raw %}
+<img src="../../assets/images/recursive-gru.jpg" alt="">
+{% endraw %}
+
+We can use a simple recursion with custom inits for the flows. Something like this
+```swift
+
+enum AppFlow: String {
+    case home
+    case login
+
+    init?(deeplink: String) {
+        if let flow = AppFlow(rawValue: deeplink) {
+            self = flow
+            return
+        }
+
+        if HomeFlow(deeplink: deeplink) != nil {
+            self = .home
+        } else if LoginFlow(deeplink: deeplink) != nil {
+            self = .login
+        } else {
+            return nil
+        }
+    }
+}
+
+enum HomeFlow: String {
+    case dashboard
+    case profile
+    case settings
+
+    init?(deeplink: String) {
+        if let flow = HomeFlow(rawValue: deeplink) {
+            self = flow
+            return
+        }
+
+        if DashboardFlow(deeplink: deeplink) != nil {
+            self = .dashboard
+        } else if ProfileFlow(deeplink: deeplink) != nil {
+            self = .profile
+        } else if SettingsFlow(deeplink: deeplink) != nil {
+            self = .settings
+        } else {
+            return nil
+        }
+    }
+}
+
+...
+
+enum CardFlow: String {
+    case cardDetail
+
+    init?(deeplink: String) {
+        if let flow = CardFlow(rawValue: deeplink) {
+            self = flow
+        } else {
+            return nil
+        }
+    }
+}
+```
+Pay attention to init parts, there are differences between *rawValue* and *deeplink*
+
+Let's walkthrough how our flow logic should work right now.
+
+Now given the route `AppFlow → HomeFlow → DashboardFlow → CardFlow`, we can go through each corresponding coordinator and handle it separately.
+
+In `AppCoordinator` we will initiliaze `Appflow(rawValue: "cardDetail")`. By the above defined recursion it should return `.home` case, so we know that we should push the `HomeCoordinator`.
+
+We will do the same in `HomeFlow(rawValue: "cardDetail")` and it should return `.dashboard` case. Our `HomeCoordinator` has a `UITabBarController` so it will select the Dashboard. After that we pass the deeplink deeper into the `DashboardCoordinator`
+
+We will repeat the above step for the Dashboard and now finally in `CardCoordinator` we initialize `CardFlow(rawValue: "cardDetail")` and push the corresponding `CardDetailVC`
+
+## Real application
+
+I am going to try this out with *reactive* approach using *Combine*. So our base *Coordinator* part with deeplink handling now looks like this
+
+```swift
+class Coordinator {
+    let deeplinkSubject = CurrentValueSubject<String?, Never>(nil)
+    var deeplinkDisposeBag = Set<AnyCancellable>()
+
+    func resetDeeplink() {
+        for child in childCoordinators {
+            child.deeplinkDisposeBag = Set<AnyCancellable>()
+        }
+        deeplinkSubject.send(nil)
+    }
+
+    func addChild(_ coordinator: Coordinator) {
+        deeplinkSubject
+            .subscribe(coordinator.deeplinkSubject)
+            .store(in: &coordinator.deeplinkDisposeBag)
+
+        childCoordinators.append(coordinator)
+    }
+}
+```
+We are passing deeplinks deeper into child coordinators by binding deeplinkSubjects in
+`addChild` function.  
+
+Note that we used `CurrentValueSubject` (`BehaviorSubject` in RxSwift) instead of `PassthroughSubject` (`PublishSubject` in RxSwift) because in the time the deeplinkSubject gets emitted, we may not have our child Coordinators initialized.  
+
+We have to `resetDeeplink` after we process the deeplink. That should solve the cases when the deeplink gets emitted again and we are already deeper in the navigation.  
+
+In this implementation we will always reset the navigation when the deeplink gets emitted.
+
+Actual implementation in the coordinators:
+```swift
+// AppCoordinator
+private func bindDeeplink() {
+    deeplinkSubject
+        .unwrap()
+        .map(AppFlow.init(deeplink:))
+        .unwrap()
+        .receive(on: DispatchQueue.main)
+        .sink { [weak self] deeplink in
+            guard let self = self else { return }
+            switch deeplink {
+            case .home:
+                self.setHome()
+            case .login:
+                self.setLogin()
+            }
+            self.resetDeeplink()
+        }.store(in: &disposeBag)
+}
+
+private func setHome() {
+    let homeCoordinator = HomeCoordinator(router: router, navigationType: .newFlow(hideBar: true))
+    setRootChild(coordinator: homeCoordinator, hideBar: true)
+}
+
+private func setLogin() {
+    let loginCoordinator = LoginCoordinator(router: router, navigationType: .newFlow(hideBar: false), userManager: userManager)
+    setRootChild(coordinator: loginCoordinator, hideBar: false)
+}
+
+// HomeCoordinator
+private func bindDeeplink() {
+    deeplinkSubject
+        .unwrap()
+        .map(HomeFlow.init(deeplink:))
+        .unwrap()
+        .receive(on: DispatchQueue.main)
+        .sink { [weak self] deeplink in
+            guard let self = self else { return }
+            switch deeplink {
+            case .dashboard:
+                self.tabBarController.selectedViewController = self.dashboardCoordinator.toPresentable()
+            case .profile:
+                self.tabBarController.selectedViewController = self.profileCoordinator.toPresentable()
+            case .settings:
+                self.tabBarController.selectedViewController = self.settingsCoordinator.toPresentable()
+            }
+            self.resetDeeplink()
+        }.store(in: &disposeBag)
+}
+
+// DashboardCoordinator
+private func bindDeeplink() {
+    deeplinkSubject
+        .unwrap()
+        .map(DashboardFlow.init(deeplink:))
+        .unwrap()
+        .receive(on: DispatchQueue.main)
+        .sink { [weak self] deeplink in
+            guard let self = self else { return }
+            switch deeplink {
+            case .card:
+                self.showCard(animated: false)
+            }
+            self.resetDeeplink()
+        }.store(in: &disposeBag)
+}
+
+private func showCard(animated: Bool = true) {
+    let cardCoordinator = CardCoordinator(router: router, navigationType: .currentFlow)
+    pushChild(coordinator: cardCoordinator, animated: animated)
+}
+```
+
+## Other dependencies
+
+There will often be times when you need to fetch and load some data in order to continue or that you need to wait for some other asynchronous operations (eg. wait when user logs in). That is where the *reactive* approach comes in handy. You can apply all sort of operations (combineLatest, zip, withLatestFrom, flatMap, etc.) to those signals and then process them when everything is loaded.
+
+You can find a complete example [here](https://github.com/iaminh/CoordinatorExample).
