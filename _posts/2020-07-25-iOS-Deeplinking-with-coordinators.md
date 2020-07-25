@@ -72,7 +72,7 @@ enum AppFlow: String {
 ```
 In this case we either navigate the user to the login screen or to the main dashboard.
 
-And our `Home` and `Login` parts should look like this. The other flows should be implemented in the same manner.
+And our *Home* and *Login* parts should look like this. The other flows should be implemented in the same manner.
 
 ```swift
 enum HomeFlow: String {
@@ -86,17 +86,18 @@ enum LoginFlow: String {
     case registration
 }
 
-....
+enum DashboardFlow: String {
+    case card
+}
 
 enum CardFlow: String {
-    case card
     case cardDetail
 }
 
 ```
 
 ### The fun part
-Now we had defined several flows. So how to actually pass the deeplink from `AppFlow` to other flows, child flows? How can we now that *cardDetail* belongs to `CardFlow`, or that we have to go through  
+Now we had defined several flows. So how to actually pass the deeplink from `AppFlow` to other child flows? How can we now that *cardDetail* belongs to `CardFlow`, or that we have to go through  
 
 `AppFlow → HomeFlow → DashboardFlow → CardFlow` in order to show `CardDetailVC`?
 
