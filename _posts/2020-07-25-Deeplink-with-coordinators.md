@@ -1,5 +1,5 @@
 ---
-title: "Deeplinking with coordinators"
+title: "Deeplink with coordinators"
 tags:
   - coordinators
   - deeplinks
