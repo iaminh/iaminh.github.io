@@ -49,7 +49,7 @@ if let navCtrl = rootVC as? UINavigationController ?? rootVC.navigationControlle
 
 ```
 
-I strongly encourage using *Reactive* approach with *MVVM*. For the sake of simplicity, I will skip the `ViewModel` part and only continue using Coordinators and ViewControllers.
+I strongly encourage using *Reactive* approach with *MVVM*. For the sake of simplicity, I will skip the *ViewModel* part and only continue using Coordinators and ViewControllers.
 
 ## App structure
 
@@ -57,7 +57,7 @@ I strongly encourage using *Reactive* approach with *MVVM*. For the sake of simp
 <img src="../../assets/images/appStructure.png" alt="">
 {% endraw %}
 
-We will implement deeplinks for the above app structure. Our main purpose is to be able to deeplink to any part of the app. There are multiple layers of coordinators/childCoordinators and our job is to load the correct screen and keep the same navigation hierarchy.
+We will implement deeplinks for the above app structure. Our main goal is to be able to deeplink to any part of the app. There are multiple layers of coordinators/childCoordinators and our job is to load the correct screen and keep the same navigation hierarchy.
 
 ## Go with the flow
 
