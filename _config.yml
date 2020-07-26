@@ -16,8 +16,8 @@ minimal_mistakes_skin: "default" # "air", "aqua", "contrast", "dark", "dirt", "n
 
 # Site Settings
 locale: "en-US"
-title: "Short iOS Swift recipes"
-title_separator: "-"
+title: "Swift, iOS articles"
+title_separator: "|"
 subtitle: ""
 name: "Minh Chu"
 description: "Minh Chu's attempt to share interesting findings in the world of iOS development, the fun way"
