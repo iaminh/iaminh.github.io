@@ -192,3 +192,4 @@ Make sure to only use it in your app store releases.
 
 - [owasp](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06j-Testing-Resiliency-Against-Reverse-Engineering.md)
 - [iphonedevwiki.net](http://iphonedevwiki.net/index.php/Crack_prevention#PT_DENY_ATTACH)
+- Complete example [here](https://github.com/iaminh/Ptrace).
