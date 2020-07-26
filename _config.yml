@@ -16,7 +16,7 @@ minimal_mistakes_skin: "default" # "air", "aqua", "contrast", "dark", "dirt", "n
 
 # Site Settings
 locale: "en-US"
-title: "Swift, iOS articles"
+title: "Swift dev articles"
 title_separator: "|"
 subtitle: ""
 name: "Minh Chu"
