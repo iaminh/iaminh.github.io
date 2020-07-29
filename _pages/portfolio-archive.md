@@ -2,6 +2,7 @@
 title: Portfolio
 layout: single
 permalink: /portfolio/
+author_profile: true
 ---
 
 A track record of successful deliveries for clients from smaller startups to major Czech financial and telecom companies.
