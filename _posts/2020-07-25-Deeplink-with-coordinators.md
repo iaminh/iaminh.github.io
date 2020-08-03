@@ -7,7 +7,7 @@ tags:
 header:
   teaser: "assets/images/coordinator-teaser.jpg"
 ---
-There are countless articles about **Coordinator** pattern and how great it is to manage deeplinking, but not many go in-depth on how to actually use them in real production apps.
+There are countless articles about **Coordinator** pattern and how great it is to manage deeplinking, but not many go in-depth on how to use them in real production apps.
 
 {% raw %}
 <img src="../../assets/images/coordinator-teaser.jpg" alt="">
@@ -70,7 +70,7 @@ enum AppFlow: String {
     case login
 }
 ```
-In this case we either navigate the user to the login screen or to the main dashboard.
+In this case we either navigate the user to the login screen or the main dashboard.
 
 And our *Home* and *Login* parts should look like this. The other flows should be implemented in the same manner.
 
@@ -97,9 +97,9 @@ enum CardFlow: String {
 ```
 
 ### The fun part
-Now we had defined several flows. So how to actually pass the deeplink from `AppFlow` to other child flows? How can we now that *cardDetail* belongs to `CardFlow`, or that we have to go through  
+Now that we had defined several flows, how can we pass the deeplink from `AppFlow` to other child flows? How do we now that *cardDetail* belongs to `CardFlow`, or that we have to go through  
 
-`AppFlow → HomeFlow → DashboardFlow → CardFlow` in order to show `CardDetailVC`?
+`AppFlow → HomeFlow → DashboardFlow → CardFlow` to show `CardDetailVC`?
 
 ### Recursion
 
@@ -169,15 +169,15 @@ enum CardFlow: String {
 ```
 Pay attention to init parts, there are differences between *rawValue* and *deeplink*
 
-Let's walkthrough how our flow logic should work right now.
+Let's walk through how our flow logic should work right now.
 
 Now given the route `AppFlow → HomeFlow → DashboardFlow → CardFlow`, we can go through each corresponding coordinator and handle it separately.
 
-In `AppCoordinator` we will initiliaze `Appflow(rawValue: "cardDetail")`. By the above defined recursion it should return `.home` case, so we know that we should push the `HomeCoordinator`.
+In `AppCoordinator` we will initialize `Appflow(deeplink: "cardDetail")`. By the above-defined recursion, it should return `.home` case, so we know that we should push the `HomeCoordinator`.
 
-We will do the same in `HomeFlow(rawValue: "cardDetail")` and it should return `.dashboard` case. Our `HomeCoordinator` has a `UITabBarController` so it will select the Dashboard. After that we pass the deeplink deeper into the `DashboardCoordinator`
+We will do the same in `HomeFlow(deeplink: "cardDetail")` and it should return `.dashboard` case. Our `HomeCoordinator` has a `UITabBarController` so it will select the Dashboard. After that, we pass the deeplink deeper into the `DashboardCoordinator`
 
-We will repeat the above step for the Dashboard and now finally in `CardCoordinator` we initialize `CardFlow(rawValue: "cardDetail")` and push the corresponding `CardDetailVC`
+We will repeat the above step for the Dashboard and now finally in `CardCoordinator` we initialize `CardFlow(deeplink: "cardDetail")` and push the corresponding `CardDetailVC`
 
 ## Real application
 
@@ -211,9 +211,9 @@ Note that we used `CurrentValueSubject` (`BehaviorSubject` in RxSwift) instead o
 
 We have to `resetDeeplink` after we process the deeplink. That should solve the cases when the deeplink gets emitted again and we are already deeper in the navigation.
 
-In this implementation we will always reset the navigation when the deeplink gets emitted.
+In this implementation, we will always reset the navigation when the deeplink gets emitted.
 
-Actual implementation in the coordinators:
+The actual implementation in the coordinators:
 ```swift
 // AppCoordinator
 private func bindDeeplink() {
@@ -290,6 +290,6 @@ private func showCard(animated: Bool = true) {
 
 ## Other dependencies
 
-There will often be times when you need to fetch and load some data in order to continue or that you need to wait for some other asynchronous operations (eg. wait when user logs in). That is where the *reactive* approach comes in handy. You can apply all sort of operations (combineLatest, zip, withLatestFrom, flatMap, etc.) to those signals and then process them when everything is loaded.
+There will often be times when you need to fetch and load some data to continue or that you need to wait for some other asynchronous operations (eg. wait when the user logs in). That is where the *reactive* approach comes in handy. You can apply all sorts of operations (combineLatest, zip, withLatestFrom, flatMap, etc.) to those signals and then process them when everything is loaded.
 
 You can find a complete example [here](https://github.com/iaminh/CoordinatorExample).
